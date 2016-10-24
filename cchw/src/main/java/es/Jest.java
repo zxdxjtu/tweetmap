@@ -48,7 +48,7 @@ public class Jest{
 	public static JestClient jestClient(){
 		 JestClientFactory factory = new JestClientFactory();
 		 factory.setHttpClientConfig(new HttpClientConfig
-		                        .Builder("http://search-tweet-i6eqzgl7vezziy444zvg6hxdbi.us-west-2.es.amazonaws.com")
+		                        .Builder("YOUR_AWS_ELASTICSEARCH_ENDPOINT")
 		                        .multiThreaded(true)
 		                        .build());
 		 return factory.getObject();
