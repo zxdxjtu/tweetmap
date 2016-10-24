@@ -29,7 +29,6 @@ import io.searchbox.core.Search;
 import io.searchbox.params.Parameters;
 
 @WebServlet(name = "newServlet", urlPatterns = {"/newServlet"}, loadOnStartup=1)
-//@WebServlet("/newServlet")
 public class newServlet extends HttpServlet{
 	
 	private static final long serialVersionUID = 489141392031L;
@@ -52,8 +51,7 @@ public class newServlet extends HttpServlet{
 		 JestClient jestClient = factory.getObject();
 		
 		SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        //searchSourceBuilder.query(QueryBuilders.termQuery("note", "see"));
-        searchSourceBuilder.query(QueryBuilders.matchQuery("keyword", key));
+       searchSourceBuilder.query(QueryBuilders.matchQuery("keyword", key));
 
         Search search = new Search.Builder(searchSourceBuilder.toString()).setParameter(Parameters.SIZE, 100)
                 .addIndex("tweet").addType("notes").build();

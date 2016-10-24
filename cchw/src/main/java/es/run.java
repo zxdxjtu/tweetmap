@@ -13,9 +13,6 @@ public class run implements Runnable {
 	            try {
 	                // run test index & searching
 	                System.out.println("Start running");
-	            	//deleteTestIndex(jestClient);
-	                //Jest.createTestIndex(jestClient);
-	                //indexSomeData(jestClient);
 	                String keywords[] = {"job", "love", "game", "fashion", "Trump", "NewYork","fashion", "food", "LOL","Hilary", "hello"};
 	                Jest.doSampleAndInsert(jestClient, keywords);
 	                

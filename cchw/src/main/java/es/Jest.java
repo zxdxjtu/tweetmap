@@ -3,8 +3,6 @@ package es;
 import java.io.IOException;
 import java.util.List;
 
-//import io.searchbox.action.Action;
-//import io.searchbox.action.BulkableAction;
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestClientFactory;
 import io.searchbox.client.JestResult;
@@ -66,93 +64,15 @@ public class Jest{
                 settings.build().getAsMap()).build());
     }
 	
-//	public static void readAllData(final JestClient jestClient)
-//            throws Exception {
-//        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-//        //searchSourceBuilder.query(QueryBuilders.termQuery("note", "see"));
-//        searchSourceBuilder.query(QueryBuilders.matchQuery("keyword", "love"));
-//
-//        Search search = new Search.Builder(searchSourceBuilder.toString())
-//                .addIndex(DIARY_INDEX_NAME).addType(NOTES_TYPE_NAME).build();
-//        System.out.println(searchSourceBuilder.toString());
-//        JestResult result = jestClient.execute(search);
-//        List<Note> notes = result.getSourceAsObjectList(Note.class);
-//        System.out.println("PreReading----");
-//        for (Note note : notes) {
-//        	System.out.println("Reading----");
-//        	System.out.println(note);
-//            System.out.println("Username: " + note.getUsername() + "\n");
-//            System.out.println("finished!");
-//        }
-//    }
-	
-//	private static void deleteTestIndex(final JestClient jestClient)
-//            throws Exception {
-//        DeleteIndex deleteIndex = new DeleteIndex.Builder(DIARY_INDEX_NAME)
-//                .build();
-//        jestClient.execute(deleteIndex);
-//    }
-//	
-//	private static void indexSomeData(final JestClient jestClient)
-//            throws Exception {
-//        
-//		
-		
-//		// Blocking index
-//        final Note note1 = new Note("mthomas", "Note1: do u see this - "
-//                + System.currentTimeMillis());
-//        Index index = new Index.Builder(note1).index(DIARY_INDEX_NAME)
-//                .type(NOTES_TYPE_NAME).build();
-//        jestClient.execute(index);
-
-//        // Asynch index
-//        final Note note2 = new Note("mthomas", "Note2: do u see this - "
-//                + System.currentTimeMillis());
-//        index = new Index.Builder(note2).index(DIARY_INDEX_NAME)
-//                .type(NOTES_TYPE_NAME).build();
-//        jestClient.executeAsync(index, new JestResultHandler<JestResult>() {
-//            public void failed(Exception ex) {
-//            }
-//
-//            public void completed(JestResult result) {
-//                note2.setId((String) result.getValue("_id"));
-//                System.out.println("completed==>>" + note2);
-//            }
-//        });
-//
-//        // bulk index
-//        final Note note3 = new Note("mthomas", "Note3: do u see this - "
-//                + System.currentTimeMillis());
-//        final Note note4 = new Note("mthomas", "Note4: do u see this - "
-//                + System.currentTimeMillis());
-//        Bulk bulk = new Bulk.Builder()
-//                .addAction(
-//                        new Index.Builder(note3).index(DIARY_INDEX_NAME)
-//                                .type(NOTES_TYPE_NAME).build())
-//                .addAction(
-//                        new Index.Builder(note4).index(DIARY_INDEX_NAME)
-//                                .type(NOTES_TYPE_NAME).build()).build();
-//        JestResult result = jestClient.execute(bulk);
-//
-//        Thread.sleep(2000);
-//
-//        System.out.println(result.toString());
-//    }
-	
 	public static void doSampleAndInsert(final JestClient jestClient, final String[] keywords)throws Exception{
 		ConfigurationBuilder cb = new ConfigurationBuilder();
         cb.setDebugEnabled(true);
         
-        cb.setOAuthConsumerKey("0QCOd01kMqhrBiv2uI2TGmoYx");
-        cb.setOAuthConsumerSecret("ISuJEdHms5etk2WqKANdVT3gZcTR446Hwyl9TBA6ZNyd52S3gN");
-        cb.setOAuthAccessToken("790220452400599040-5QdnY69HhSOtxTfUf4ox4D6H5vOcyl7");
-        cb.setOAuthAccessTokenSecret("Wnu5xq47d8RDi8m0N0hyuo7V84byXF9i2WPNyUzMckZie");
-        
-//        cb.setOAuthConsumerKey("sS7kb2Aem4qRic99uvHIL9FJ7");
-//        cb.setOAuthConsumerSecret("YmIUH0T88dlKmhcOk89kZctSaWOFfhMxjhGzbkz52qoYd4lOm5");
-//        cb.setOAuthAccessToken("2982765431-qTC62xjv0JNhs8Y2l8Mwo0msAYj4bzF7bFkgvwF");
-//        cb.setOAuthAccessTokenSecret("NkL53ic4n1TgnQa69m6avCpqtSgOPOGRslZ4NxE9biEsM");
-
+        cb.setOAuthConsumerKey("YOUR_CONSUMERKEY");
+        cb.setOAuthConsumerSecret("YOUR_CONSUMERSECRET");
+        cb.setOAuthAccessToken("YOUR_ACCESSTOKEN");
+        cb.setOAuthAccessTokenSecret("YOUR_ACCESSSECRET");
+ 
         TwitterStream twitterStream = new TwitterStreamFactory(cb.build()).getInstance();
 
         //final Builder bulkBuilder =  new Bulk.Builder();
@@ -201,44 +121,19 @@ public class Jest{
                 		System.out.println("Now keyword is: " + keyword);
                 	}
                 }
-                //System.out.println("keyword: " + keyword);
               Note note = new Note(keyword, username, profileLocation, longitude, latitude, tweetId, content);
-              //System.out.println("here1");
-              //notes.add(note);
-              //System.out.println("here2");
-              
-//              Bulk bulk = new Bulk.Builder()
-//              .addAction(
-//                      new Index.Builder(note).index(DIARY_INDEX_NAME)
-//                              .type(NOTES_TYPE_NAME).build()).build();
- 
-              //Index index = new Index.Builder(note1).index(DIARY_INDEX_NAME)
-              //.type(NOTES_TYPE_NAME).build();
-              //bulkBuilder.addAction(index);
-              
-//            bulkBuilder.addAction(
-//                    new Index.Builder(new Note(keyword, username, profileLocation, status.getGeoLocation().toString(), tweetId, content)).index(DIARY_INDEX_NAME)
-//                            .type(NOTES_TYPE_NAME).build()).build();
               
             try {
             	Index index = new Index.Builder(note).index(DIARY_INDEX_NAME)
                         .type(NOTES_TYPE_NAME).id(ID + "").build();
-				jestClient.execute(index);
+				//You can either upload use bulk
+                jestClient.execute(index);
 				ID++;
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-            
-//              System.out.println("bulkBuilder: " + bulkBuilder.toString());
            }
-              //System.out.println("here3");
-              //JestResult result;
-              //Index index = new Index.Builder(note).index(NOTES_TYPE_NAME).type(NOTES_TYPE_NAME).build();
-              //System.out.println(note.toString());
-              //System.out.println("here4");
-				//JestResult result;
-			
 
              
             }
@@ -256,7 +151,6 @@ public class Jest{
         };
         FilterQuery fq = new FilterQuery();
     
-        //String keywords[] = {"love"};
 
         fq.track(keywords);
 
@@ -266,23 +160,12 @@ public class Jest{
 			while(true){
         	Thread.sleep(Integer.MAX_VALUE);
 			}
-//			Bulk bulk = bulkBuilder.build();
-//			JestResult result;
-//			try {
-//				//System.out.println("here5");
-//				result = jestClient.execute(bulk);
-//				System.out.println("succeed: " + result.toString());
-//				Thread.sleep(2000);
-//			} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//			} 
 
         }finally {
 			twitterStream.shutdown();
 		}
 	}
-	
+	//didn't use
 	public void createMapping(JestClient client) throws IOException{
 		PutMapping putMapping = new PutMapping.Builder(
 		        "my_index",
@@ -292,51 +175,4 @@ public class Jest{
 		client.execute(putMapping);
 	}
 	
-//	public static void main(String[] args) {
-//        try {
-//           JestClient jestClient = jestClient();
-//
-//            try {
-//                // run test index & searching
-//                //deleteTestIndex(jestClient);
-//                createTestIndex(jestClient);
-//                //indexSomeData(jestClient);
-//                String keywords[] = {"love", "game"};
-//                doSampleAndInsert(jestClient, keywords);
-//                readAllData(jestClient);
-//            } finally {
-//                // shutdown client
-//                jestClient.shutdownClient();
-//            }
-//
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//        }
-//    }
-	
-//	public void run(){
-//		//while(true){
-//		try {
-//	           JestClient jestClient = jestClient();
-//
-//	            try {
-//	                // run test index & searching
-//	                System.out.println("Start running");
-//	            	//deleteTestIndex(jestClient);
-//	                createTestIndex(jestClient);
-//	                //indexSomeData(jestClient);
-//	                String keywords[] = {"job", "love", "game", "fashion", "Trump", "NewYork","fashion", "food", "LOL","Hilary", "hello"};
-//	                doSampleAndInsert(jestClient, keywords);
-//	                //readAllData(jestClient);
-//	                System.out.println("running stop");
-//	            } finally {
-//	                // shutdown client
-//	                jestClient.shutdownClient();
-//	            }
-//
-//	        } catch (Exception ex) {
-//	            ex.printStackTrace();
-//	        }
-//		}
-	//}
 }
